@@ -1,0 +1,10 @@
+# Dependências do Vue
+vue/node_modules/
+
+# Arquivos gerados
+vue/dist/
+dist/
+
+# Arquivos temporários
+.DS_Store
+*.log

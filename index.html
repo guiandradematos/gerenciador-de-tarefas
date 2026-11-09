@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" ng-app="gerenciadorTarefas">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gerenciador de Tarefas</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script src="app/app.js"></script>
+    <script src="app/controladores/controladorPrincipal.js"></script>
+    <script src="app/diretivas/acordeao.js"></script>
+    <script src="app/diretivas/paginacao.js"></script>
+    <script src="app/diretivas/barraProgresso.js"></script>
+    <script src="app/diretivas/abas.js"></script>
+    <script src="app/diretivas/menuSuspenso.js"></script>
+    <script src="app/diretivas/notificacao.js"></script>
+
+</head>
+
+<body ng-controller="ControladorPrincipal">
+
+    <header>
+        <h1>Gerenciador de Tarefas</h1>
+        <p>{{ mensagem }}</p>
+    </header>
+
+    <notificacao
+        mensagem="mensagemNotificacao"
+        tipo="tipoNotificacao">
+    </notificacao>
+
+    <main>
+
+        <section class="progresso">
+            <h2>Meu Progresso</h2>
+
+            <barra-progresso
+                progresso="calcularProgresso()">
+            </barra-progresso>
+        </section>
+
+        <section>
+            <h2>Organização das tarefas</h2>
+
+            <menu-suspenso
+                opcoes="opcoesMenu"
+                ao-selecionar="selecionarOpcao(opcao)">
+            </menu-suspenso>
+
+            <painel-abas
+                lista-abas="abas"
+                aba-selecionada="abaSelecionada"
+                ao-selecionar="selecionarAba(titulo)">
+            </painel-abas>
+        </section>
+
+        <section>
+            <h2>Minhas Tarefas</h2>
+
+            <div ng-repeat="tarefa in tarefasFiltradas().slice((paginaAtual - 1) * itensPorPagina, paginaAtual * itensPorPagina)">
+
+                <h3>{{ tarefa.titulo }}</h3>
+
+                <p>{{ tarefa.descricao }}</p>
+
+                <p>Prioridade: {{ tarefa.prioridade }}</p>
+
+                <p>
+                    {{ tarefa.concluida ? 'Concluída' : 'Pendente' }}
+                </p>
+
+                <button
+                    ng-if="!tarefa.concluida"
+                    ng-click="concluirTarefa(tarefa)"
+                    class="botao-concluir">
+
+                    Concluir tarefa
+
+                </button>
+
+                <span
+                    ng-if="tarefa.concluida"
+                    class="tarefa-finalizada">
+
+                    ✓ Tarefa concluída
+
+                </span>
+
+            </div>
+
+            <paginacao
+                pagina-atual="paginaAtual"
+                total-paginas="totalPaginas"
+                mudar-pagina="mudarPagina(pagina)">
+            </paginacao>
+
+        </section>
+
+        <section>
+            <h2>Dúvidas frequentes</h2>
+
+            <acordeao informacoes="informacoes"></acordeao>
+        </section>
+
+    </main>
+
+</body>
+
+</html>
